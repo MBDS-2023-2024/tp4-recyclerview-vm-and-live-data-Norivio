@@ -1,20 +1,23 @@
 package org.mbds.unice.github.data.repository
 
+import android.icu.lang.UCharacter.GraphemeClusterBreak.L
 import org.mbds.unice.github.data.api.ApiService
+import org.mbds.unice.github.data.api.FakeApiServiceGenerator.FAKE_USERS
+import org.mbds.unice.github.data.api.FakeApiServiceGenerator.FAKE_USERS_RANDOM
 import org.mbds.unice.github.data.model.User
 
-class UserRepository(
-    private val apiService: ApiService
-) {
+class UserRepository(private val apiService: ApiService) {
+
     fun getUsers(): List<User> {
-        TODO("Should return the list of users retrieved from the api service")
+        return FAKE_USERS
     }
 
     fun addRandomUser() {
-        TODO("Should add a random user")
+        val randomUser = FAKE_USERS_RANDOM.random()
+        FAKE_USERS.add(randomUser)
     }
 
     fun deleteUser(user: User) {
-        TODO("Should remove the user")
+        FAKE_USERS.remove(user)
     }
 }
