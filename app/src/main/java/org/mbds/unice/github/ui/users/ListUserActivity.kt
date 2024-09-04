@@ -46,7 +46,8 @@ class ListUserActivity : AppCompatActivity(), UserListAdapter.Listener {
         fab = findViewById(R.id.activity_list_user_fab)
         fab.setOnClickListener {
             //TODO("Ajouter un utilisateur aléatoire")
-            
+            viewModel.generateRandomUser()
+            configureRecyclerView()
         }
     }
 
