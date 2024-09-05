@@ -1,6 +1,9 @@
 package org.mbds.unice.github.ui.users
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -52,7 +55,64 @@ class ListUserActivity : AppCompatActivity(), UserListAdapter.Listener {
     }
 
     override fun onClickDelete(user: User) {
-        TODO("Ajouter des logs pour tracer les actions de l'utilisateur")
-        TODO("Ajouter une boite de dialogue pour confirmer la suppression et supprimer l'utilisateur si l'utilisateur confirme")
+        //TODO("Ajouter des logs pour tracer les actions de l'utilisateur")
+        //TODO("Ajouter une boite de dialogue pour confirmer la suppression et supprimer l'utilisateur si l'utilisateur confirme")
+        viewModel.deleteUser(user)
+        configureRecyclerView()
+    }
+
+    @SuppressLint("ResourceType")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.layout.menu_sort_users, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_sort_asc -> {
+                sortUsersAlphabetically(true)
+                true
+            }
+            R.id.menu_sort_desc -> {
+                sortUsersAlphabetically(false)
+                true
+            }
+            R.id.menu_sort_date_asc -> {
+                sortUsersByDate(true)
+                true
+            }
+            R.id.menu_sort_date_desc -> {
+                sortUsersByDate(false)
+                true
+            }
+            R.id.sort_by_status -> {
+                sortUsersByStatus()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun sortUsersAlphabetically(ascending: Boolean) {
+        val sortedList = if (ascending) {
+            viewModel.users.value?.sortedBy { it.login }
+        } else {
+            viewModel.users.value?.sortedByDescending { it.login }
+        }
+        sortedList?.let { adapter.updateList(it) }
+    }
+
+    private fun sortUsersByDate(ascending: Boolean) {
+        val sortedList = if (ascending) {
+            viewModel.users.value?.sortedBy { it.creationDate }
+        } else {
+            viewModel.users.value?.sortedByDescending { it.creationDate }
+        }
+        sortedList?.let { adapter.updateList(it) }
+    }
+
+    private fun sortUsersByStatus() {
+        val sortedList = viewModel.users.value?.sortedBy { it.isActive }
+        sortedList?.let { adapter.updateList(it) }
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_sort_asc"
+        android:title="Trier A-Z"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_sort_desc"
+        android:title="Trier Z-A"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_sort_date_asc"
+        android:title="Trier par date croissante"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_sort_date_desc"
+        android:title="Trier par date décroissante"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/sort_by_status"
+        android:title="Trier par statut"
+        android:orderInCategory="3"
+        android:showAsAction="never" />
+</menu>

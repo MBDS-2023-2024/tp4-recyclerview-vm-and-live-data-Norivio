@@ -9,15 +9,19 @@ import org.mbds.unice.github.data.model.User
 class UserRepository(private val apiService: ApiService) {
 
     fun getUsers(): List<User> {
-        return FAKE_USERS
+        //return FAKE_USERS
+        return apiService.getUsers()
     }
 
     fun addRandomUser() {
-        val randomUser = FAKE_USERS_RANDOM.random()
-        FAKE_USERS.add(randomUser)
+        apiService.addRandomUser()
     }
 
     fun deleteUser(user: User) {
-        FAKE_USERS.remove(user)
+        apiService.deleteUser(user)
+    }
+
+    fun updateUser(user: User) {
+        apiService.updateUser(user)
     }
 }

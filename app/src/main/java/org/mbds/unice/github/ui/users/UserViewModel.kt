@@ -33,7 +33,8 @@ class UserViewModel : ViewModel() {
     }
 
     fun deleteUser(user: User) {
-        userRepository.deleteUser(user)
+        //userRepository.deleteUser(user)
+        userRepository.updateUser(user)
         refresh()
     }
 }

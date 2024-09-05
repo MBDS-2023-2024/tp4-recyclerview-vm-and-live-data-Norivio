@@ -1,5 +1,6 @@
 package org.mbds.unice.github.ui.users
 
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
@@ -23,11 +24,20 @@ class ListUserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(user: User, callback: UserListAdapter.Listener) {
         // TODO : Utiliser une librairie pour charger l'image (glide, coil, )
         username.text = user.login
-        Glide.with(itemView.context)
-            .load(user.avatarUrl)
-            .into(avatar)
+        Glide.with(itemView.context).load(user.avatarUrl).into(avatar)
 
-        deleteButton.setOnClickListener { callback.onClickDelete(user) }
+        // Mettre à jour l'arrière-plan et l'icône du bouton selon le statut de l'utilisateur
+        if (user.isActive) {
+            itemView.setBackgroundColor(Color.WHITE)
+            deleteButton.setImageResource(R.drawable.ic_delete_black_24dp) // Icône poubelle
+        } else {
+            itemView.setBackgroundColor(Color.RED)
+            deleteButton.setImageResource(R.drawable.baseline_undo_24) // Icône restauration
+        }
+
+        deleteButton.setOnClickListener {
+            callback.onClickDelete(user)
+        }
     }
 
 }
