@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -61,9 +62,29 @@ class ListUserActivity : AppCompatActivity(), UserListAdapter.Listener {
         configureRecyclerView()
     }
 
-    @SuppressLint("ResourceType")
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.layout.menu_sort_users, menu)
+        menuInflater.inflate(R.menu.menu_sort_users, menu)
+
+        // Get the SearchView and set the searchable configuration
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as? SearchView
+
+        // Set a query hint for the user
+        searchView?.queryHint = "Search by name"
+
+        // Set up the listener for search query changes
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false // We don't use the submit action
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Call the method to filter the list of users based on the query
+                filterUsersByName(newText)
+                return true
+            }
+        })
+
         return true
     }
 
@@ -114,5 +135,14 @@ class ListUserActivity : AppCompatActivity(), UserListAdapter.Listener {
     private fun sortUsersByStatus() {
         val sortedList = viewModel.users.value?.sortedBy { it.isActive }
         sortedList?.let { adapter.updateList(it) }
+    }
+
+    private fun filterUsersByName(query: String?) {
+        query?.let {
+            val filteredList = viewModel.users.value?.filter { user ->
+                user.login.contains(query, ignoreCase = true)
+            }
+            adapter.updateList(filteredList ?: listOf())
+        }
     }
 }
